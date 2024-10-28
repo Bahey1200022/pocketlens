@@ -1,3 +1,4 @@
 {
-    "cmake.sourceDirectory": "C:/Users/moham/pocketlens/windows"
+    "cmake.sourceDirectory": "C:/Users/moham/pocketlens/windows",
+    "java.configuration.updateBuildConfiguration": "interactive"
 }
