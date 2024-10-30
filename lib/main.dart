@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:tflite/tflite.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,18 +41,41 @@ class CameraScreen extends StatefulWidget {
 class _CameraScreenState extends State<CameraScreen> {
   late CameraController controller;
   late Future<void> cameraValue;
+  void runModelOnStreamFrames() async {
+    var recognitions = await Tflite.runModelOnFrame(
+      bytesList: cameraValue.planes.map((plane) {
+        return plane.bytes;
+      }).toList(),
+    );
+  }
+
+  void loadModel() {
+    Tflite.loadModel(
+      model: 'assets/best_float32.tflite',
+      labels: 'assets/labels.txt',
+    );
+  }
+
   @override
   void initState() {
     super.initState();
     controller = CameraController(widget.cameras[0], ResolutionPreset.medium);
     cameraValue = controller.initialize();
+    loadModel();
+  }
+
+  @override
+  void dispose() async {
+    controller.dispose();
+    await Tflite.close();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Camera App'),
+        title: const Text('Pocketlens'),
       ),
       body: FutureBuilder<void>(
         future: cameraValue,

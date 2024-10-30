@@ -33,6 +33,7 @@ dependencies:
   camera: ^0.10.0+1
   path_provider: 
   path:
+  tflite: ^1.0.4
     
 
 
