@@ -42,6 +42,7 @@ dependencies:
   cupertino_icons: ^1.0.6
   tflite_v2: ^1.0.0
   tflite_flutter: ^0.11.0
+  image: ^4.3.0
 
 dev_dependencies:
   flutter_test:
