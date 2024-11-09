@@ -23,7 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
   bool isCameraInitialized = false;
   String result = "";
   final YoloModel model = YoloModel(
-    'assets/best_float32.tflite',
+    'assets/best_15e_float32.tflite',
     640,
     640,
     12,
@@ -102,20 +102,24 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: const Icon(Icons.camera_alt),
                   ),
             const SizedBox(height: 20),
-            FloatingActionButton(
-              onPressed: () async {
-                XFile? imageFile = await takePhoto();
+            Container(
+              width: 200,
+              height: 200,
+              child: FloatingActionButton(
+                onPressed: () async {
+                  XFile? imageFile = await takePhoto();
 
-                if (imageFile != null) {
-                  /// run model ????
-                  Uint8List imageBytes = await imageFile.readAsBytes();
-                  final image = img.decodeImage(imageBytes)!;
-                  imageWidth = image.width;
-                  imageHeight = image.height;
-                  inferenceOutput = model.infer(image);
-                }
-              },
-              child: const Icon(Icons.camera_alt),
+                  if (imageFile != null) {
+                    /// run model ????
+                    Uint8List imageBytes = await imageFile.readAsBytes();
+                    final image = img.decodeImage(imageBytes)!;
+                    imageWidth = image.width;
+                    imageHeight = image.height;
+                    inferenceOutput = model.infer(image);
+                  }
+                },
+                child: const Icon(Icons.camera_alt),
+              ),
             ),
           ],
         ),

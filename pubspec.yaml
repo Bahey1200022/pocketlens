@@ -63,6 +63,8 @@ flutter:
   assets:
     - assets/best_float32.tflite
     - assets/labels.txt
+    - assets/best_15e_float32.tflite
+
 
 
   # The following line ensures that the Material Icons font is
