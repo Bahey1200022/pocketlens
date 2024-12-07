@@ -85,47 +85,67 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Pocketlens"),
+        title: const Text(
+          'Pocketlens',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            shadows: [
+              Shadow(
+                blurRadius: 10.0,
+                color: Colors.black,
+                offset: const Offset(2.0, 2.0),
+              ),
+            ],
+          ),
+        ),
+        backgroundColor: Colors.blue, // Changed to blue background
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            isCameraInitialized
-                ? AspectRatio(
-                    aspectRatio: controller!.value.aspectRatio,
-                    child: CameraPreview(controller!),
-                  )
-                : Container(
-                    width: 100,
-                    height: 100,
-                    child: const Icon(Icons.camera_alt),
-                  ),
-            const SizedBox(height: 20),
-            Column(
-              children: [
-                Container(
-                  width: 200,
-                  height: 200,
-                  child: FloatingActionButton(
-                    onPressed: () async {
-                      XFile? imageFile = await takePhoto();
+        child: Container(
+          color: Colors.grey, // Added grey background color
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              isCameraInitialized
+                  ? AspectRatio(
+                      aspectRatio: controller!.value.aspectRatio,
+                      child: CameraPreview(controller!),
+                    )
+                  : Container(
+                      width: 100,
+                      height: 100,
+                      child: const Icon(Icons.camera_alt),
+                    ),
+              const SizedBox(height: 20),
+              Column(
+                children: [
+                  Container(
+                    width: 200,
+                    height: 200,
+                    child: FloatingActionButton(
+                      foregroundColor: Color.fromARGB(255, 0, 0, 0),
+                      backgroundColor: Colors.white,
+                      onPressed: () async {
+                        XFile? imageFile = await takePhoto();
 
-                      if (imageFile != null) {
-                        /// run model ????
-                        Uint8List imageBytes = await imageFile.readAsBytes();
-                        final image = img.decodeImage(imageBytes)!;
-                        imageWidth = image.width;
-                        imageHeight = image.height;
-                        inferenceOutput = model.infer(image);
-                      }
-                    },
-                    child: const Icon(Icons.camera_alt),
+                        if (imageFile != null) {
+                          /// run model ????
+                          Uint8List imageBytes = await imageFile.readAsBytes();
+                          final image = img.decodeImage(imageBytes)!;
+                          imageWidth = image.width;
+                          imageHeight = image.height;
+                          inferenceOutput = model.infer(image);
+                        }
+                      },
+                      child: const Icon(Icons.camera_alt, size: 100),
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
