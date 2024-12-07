@@ -3,6 +3,7 @@ import 'package:pocketlens/labels.dart';
 import 'package:pocketlens/nms.dart';
 import 'package:tflite_flutter/tflite_flutter.dart';
 import 'package:image/image.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 
 class YoloModel {
   final String modelPath;
@@ -17,6 +18,7 @@ class YoloModel {
     this.inHeight,
     this.numClasses,
   );
+  final speech = FlutterTts();
 
   Future<void> init() async {
     _interpreter = await Interpreter.fromAsset(modelPath);
@@ -97,7 +99,7 @@ class YoloModel {
         agnostic: agnostic,
       );
 
-  void processOutput(List<List<List<double>>> output, int numClasses,
+  processOutput(List<List<List<double>>> output, int numClasses,
       {double threshold = 0.005}) {
     final predictions = output[0];
     final int numPredictions = predictions[0].length;
@@ -146,6 +148,7 @@ class YoloModel {
           .key;
       final dominantClassLabel = money[dominantClassIndex] ?? "Unknown";
       print('Dominant Class: $dominantClassLabel');
+      speech.speak(dominantClassLabel);
     }
   }
 }

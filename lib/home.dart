@@ -102,24 +102,28 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: const Icon(Icons.camera_alt),
                   ),
             const SizedBox(height: 20),
-            Container(
-              width: 200,
-              height: 200,
-              child: FloatingActionButton(
-                onPressed: () async {
-                  XFile? imageFile = await takePhoto();
+            Column(
+              children: [
+                Container(
+                  width: 200,
+                  height: 200,
+                  child: FloatingActionButton(
+                    onPressed: () async {
+                      XFile? imageFile = await takePhoto();
 
-                  if (imageFile != null) {
-                    /// run model ????
-                    Uint8List imageBytes = await imageFile.readAsBytes();
-                    final image = img.decodeImage(imageBytes)!;
-                    imageWidth = image.width;
-                    imageHeight = image.height;
-                    inferenceOutput = model.infer(image);
-                  }
-                },
-                child: const Icon(Icons.camera_alt),
-              ),
+                      if (imageFile != null) {
+                        /// run model ????
+                        Uint8List imageBytes = await imageFile.readAsBytes();
+                        final image = img.decodeImage(imageBytes)!;
+                        imageWidth = image.width;
+                        imageHeight = image.height;
+                        inferenceOutput = model.infer(image);
+                      }
+                    },
+                    child: const Icon(Icons.camera_alt),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
