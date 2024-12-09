@@ -18,10 +18,39 @@ class YoloModel {
     this.inHeight,
     this.numClasses,
   );
-  final speech = FlutterTts();
+  FlutterTts flutterTts = FlutterTts();
 
   Future<void> init() async {
     _interpreter = await Interpreter.fromAsset(modelPath);
+    _initializeTts();
+  }
+
+  Future<void> _initializeTts() async {
+    await flutterTts.setLanguage("en-US");
+    await flutterTts.setSpeechRate(0.5);
+    await flutterTts.setVolume(1.0);
+    await flutterTts.setPitch(1.0);
+
+    flutterTts.setStartHandler(() {
+      print("TTS started");
+    });
+
+    flutterTts.setCompletionHandler(() {
+      print("TTS completed");
+    });
+
+    flutterTts.setErrorHandler((msg) {
+      print("TTS error: $msg");
+    });
+  }
+
+  Future<void> _speak(String text) async {
+    var result = await flutterTts.speak(text);
+    if (result == 1) {
+      print("TTS speaking");
+    } else {
+      print("TTS not speaking");
+    }
   }
 
   List<List<double>> infer(Image image) {
@@ -148,7 +177,8 @@ class YoloModel {
           .key;
       final dominantClassLabel = money[dominantClassIndex] ?? "Unknown";
       print('Dominant Class: $dominantClassLabel');
-      speech.speak(dominantClassLabel);
+      _speak(
+          dominantClassLabel); // Use the _speak method to speak the class label
     }
   }
 }
